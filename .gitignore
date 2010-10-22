@@ -10,3 +10,5 @@ lib/bundler/man
 man/*
 !man/*.ronn
 !man/index.txt
+
+.idea

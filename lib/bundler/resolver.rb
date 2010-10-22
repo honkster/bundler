@@ -168,19 +168,6 @@ module Bundler
       throw :success, successify(activated) if reqs.empty?
 
       debug { print "\e[2J\e[f" ; "==== Iterating ====\n\n" }
-
-      # Sort dependencies so that the ones that are easiest to resolve are first.
-      # Easiest to resolve is defined by:
-      #   1) Is this gem already activated?
-      #   2) Do the version requirements include prereleased gems?
-      #   3) Sort by number of gems available in the source.
-      reqs = reqs.sort_by do |a|
-        [ activated[a.name] ? 0 : 1,
-          a.requirement.prerelease? ? 0 : 1,
-          @errors[a.name]   ? 0 : 1,
-          activated[a.name] ? 0 : search(a).size ]
-      end
-
       debug { "Activated:\n" + activated.values.map { |a| "  #{a.name} (#{a.version})" }.join("\n") }
       debug { "Requirements:\n" + reqs.map { |r| "  #{r.name} (#{r.requirement})"}.join("\n") }
 
